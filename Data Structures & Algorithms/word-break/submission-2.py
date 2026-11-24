@@ -1,20 +1,23 @@
 class Solution:
-    def wordBreak(self, s: str, words: List[str]) -> bool:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        wordSet=set(wordDict)
         cache={}
-        def dfs(j):
-            if j==len(s):
+        def dfs(i):
+            if i in cache:
+                return cache[i]
+            if i==len(s):
                 return True
-            if j in cache:
-                return cache[j]
-            for i in range(len(words)):
-                length=len(words[i])
-                new=s[j:j+length]
-                if new==words[i]:
-                    if  dfs(j+length):    
-                        cache[j]=True
-                        return cache[j]
-            cache[j]=False
-            return cache[j]
-        return dfs(0)
+            for w in wordDict:
+                length=len(w)
 
-        
+                if s[i:i+length] in wordSet:
+                    
+                    ans = dfs(i+length)
+                    if ans:
+                        return True
+                else:
+                    ans=False                    
+                
+            cache[i] = ans
+            return cache[i]
+        return dfs(0)
