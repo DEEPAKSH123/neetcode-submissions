@@ -1,13 +1,16 @@
+
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
-
-        ans=0
+        cache={}
         def dfs(i,prev):
+            if (i,prev) in cache:
+                return cache[(i,prev)]
             if i==len(nums):
                 return 0
             skip=dfs(i+1,prev)
             include=0
-            if nums[i]>prev:
+            if prev<nums[i]:
                 include=1+dfs(i+1,nums[i])
-            return max(include,skip)
-        return dfs(0,-1111)
+            cache[(i,prev)] = max(skip,include)
+            return cache[(i,prev)]
+        return dfs(0,float("-inf"))
