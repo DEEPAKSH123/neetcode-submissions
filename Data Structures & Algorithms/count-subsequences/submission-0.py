@@ -1,17 +1,16 @@
+from functools import cache
 class Solution:
     def numDistinct(self, s: str, t: str) -> int:
-        cache={}
 
-        def dfs(i,word):
-            if (i,word) in cache:
-                return cache[(i,word)]
+        @cache
+        def dfs(i,string):
             if i==len(s):
-                if word==t:
+                if string==t:
                     return 1
                 return 0
-            skip = dfs(i+1,word)
-            include = dfs(i+1,word+s[i])
-            cache[(i,word)] = skip + include
-            return cache[(i,word)]
+            skip=dfs(i+1,string)
+            include=dfs(i+1,string + s[i])
+            return skip+include
         return dfs(0,"")
+
         
